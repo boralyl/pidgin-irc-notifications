@@ -1,0 +1,5 @@
+#!/usr/bin/python
+from pidgin_irc_notifications.plugin import main
+
+
+main()

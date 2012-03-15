@@ -3,13 +3,19 @@ Requirements
 * libnotify
 * pynotify
 
-Configuration
-=============
-Add any channel names you want to the APPROVED_CHANNELS tuple.  Make sure to include the hash tag (i.e. #django)
+Install
+=======
+`sudo python setup.py install`
 
 Running
 =======
-Make pidgin-irc-notify.py executable and start it up as a background process via `./pidgin-irc-notify.py &`
+After installation run:
+
+`pidgin-irc-notify '#mychannel' '#myotherchannel' &`
+
+This will enable notifications in pidgin for the irc channels #mychannel and #myotherchannel, but no other channels you may have open.  For further documentation run:
+
+`pidgin-irc-notify -h`
 
 But How?
 --------
