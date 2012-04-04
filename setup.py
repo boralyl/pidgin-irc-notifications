@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='Pidgin IRC Notifications',
-    version='0.2.0',
+    version='0.3.0',
     url='https://bitbucket.org/boralyl/pidgin-irc-notifications',
     description='Enables notifications for specified IRC chats.',
     author='Aaron Godfrey',
