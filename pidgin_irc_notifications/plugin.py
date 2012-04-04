@@ -28,6 +28,7 @@ class IRCNotificationPlugin(object):
     
     def __init__(self, args):
         self.channels = args.channels
+        self.verbose = args.verbose
         
         bus = dbus.SessionBus()
         # Add sginal receiver for irc chat msg
@@ -54,6 +55,8 @@ class IRCNotificationPlugin(object):
         channel = self.purple.PurpleConversationGetTitle(conversation)
         if channel in self.channels and username != sender:
             msg = "%s said: %s" % (sender, message)
+            if self.verbose:
+                print msg
             n = pynotify.Notification(channel, msg).show()
 
         
@@ -61,6 +64,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Enables notifications in"
         " irc channels provided in Pidgin.")
     parser.add_argument("channels", nargs="+", help="Channel names (i.e. '#django' '#ubuntu')")
+    parser.add_argument("-v", "--verbose", dest="verbose",
+        action="store_true", default=False, help="Enables verbose mode.")
     return parser.parse_args()
         
 
