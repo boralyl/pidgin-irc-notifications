@@ -27,7 +27,7 @@ class IRCNotificationPlugin(object):
     """
     
     def __init__(self, args):
-        self.channels = args.channels
+        self.add_channels(args.channels)
         self.verbose = args.verbose
         
         bus = dbus.SessionBus()
@@ -40,6 +40,12 @@ class IRCNotificationPlugin(object):
         obj = bus.get_object("im.pidgin.purple.PurpleService",
             "/im/pidgin/purple/PurpleObject")
         self.purple = dbus.Interface(obj, "im.pidgin.purple.PurpleInterface")
+
+    def add_channels(self, channels):
+        """
+        Prefixes each channel with a # if it doesn't have one then sets the var
+        """
+        self.channels = [add_hash(c) for c in channels]
 
     def received_chat_msg_callback(self, account, sender, message, conversation, flags):
         """
@@ -67,7 +73,16 @@ def parse_args():
     parser.add_argument("-v", "--verbose", dest="verbose",
         action="store_true", default=False, help="Enables verbose mode.")
     return parser.parse_args()
-        
+
+
+def add_hash(name):
+    """
+    Adds the hash to the name if it doesn't start with one
+    """
+    if not name.startswith('#'):
+        name = '#' + name
+    return name
+
 
 def main():
     """
