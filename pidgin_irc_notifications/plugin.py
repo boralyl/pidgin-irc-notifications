@@ -20,12 +20,13 @@ from dbus.mainloop.glib import DBusGMainLoop
 import gobject
 import pynotify
 
+from pidginircnotifyconfig import PidginIrcNotifyConfig
+
 
 class IRCNotificationPlugin(object):
     """
     Pidgin IRC Notification 'plugin'
     """
-    
     def __init__(self, args):
         self.add_channels(args.channels)
         self.verbose = args.verbose
@@ -65,14 +66,20 @@ class IRCNotificationPlugin(object):
                 print msg
             n = pynotify.Notification(channel, msg).show()
 
-        
-def parse_args():
+
+def parse_args(channels):
     parser = argparse.ArgumentParser(description="Enables notifications in"
         " irc channels provided in Pidgin.")
-    parser.add_argument("channels", nargs="+", help="Channel names (i.e. '#django' '#ubuntu')")
+    parser.add_argument("channels", nargs="*", default=channels,
+        help="Channel names (i.e. '#django' '#ubuntu')")
     parser.add_argument("-v", "--verbose", dest="verbose",
         action="store_true", default=False, help="Enables verbose mode.")
-    return parser.parse_args()
+    
+    args = parser.parse_args()
+    if not channels and not args.channels:
+        parser.error('At least one channel is required as a parameter '
+            'or default channels must be added to your configuraiton.')
+    return args
 
 
 def add_hash(name):
@@ -88,8 +95,12 @@ def main():
     """
     Runs main loop and sets up listener
     """
+    # Get config
+    parser = PidginIrcNotifyConfig()
+    config = parser.parse()
+    
     # Get command line args
-    args = parse_args()
+    args = parse_args(config['channels'])   
 
     # Initialize pynotify
     pynotify.init('Initializing IRC Notifications...')

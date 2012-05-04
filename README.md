@@ -7,6 +7,15 @@ Install
 =======
 `sudo python setup.py install`
 
+Configuration
+=============
+Upon the first run a config file will be created in your home directory named `~/.pidgin-irc-notify/settings.conf`
+
+You can add default channels to monitor (instead of specifying them all individually at the command line) by suppying a comma seperated list of channels to the channels option:
+
+    [irc]
+    channels = #foo,#bar,#django
+
 Running
 =======
 After installation run:
